@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:e_commerce_mobile_app/menu.dart';
+import 'package:e_commerce_mobile_app/screens/menu.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
         ).copyWith(
           primary: const Color(0xFF1b2838), // Dark background color
           secondary: const Color(0xFF171a21), // Accent color similar to Steam's blue
-          background: const Color.fromARGB(255, 34, 38, 41), // Slightly lighter background
           surface: const Color.fromARGB(255, 44, 49, 53), // Card or surface color
         ),
         scaffoldBackgroundColor: const Color(0xFF1b2838), // Page background color
