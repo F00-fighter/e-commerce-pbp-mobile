@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:e_commerce_mobile_app/screens/product_form.dart';
-
+import 'package:e_commerce_mobile_app/screens/list_product.dart';
 
 class ItemHomepage {
   final String name;
@@ -44,6 +44,13 @@ class ItemCard extends StatelessWidget {
                     builder: (context) => ProductFormPage(),
                   ));
             }
+          else if (item.name == "Library") {
+              Navigator.push(context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProductPage()
+                  ),
+              );
+          }
         },
         // Container untuk menyimpan Icon dan Text
         child: Container(
