@@ -1,5 +1,5 @@
+import 'package:e_commerce_mobile_app/screens/login.dart';
 import 'package:flutter/material.dart';
-import 'package:e_commerce_mobile_app/screens/menu.dart';
 import 'package:provider/provider.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           ),
           scaffoldBackgroundColor: const Color(0xFF1b2838), // Page background color
         ),
-        home: MyHomePage(),
+        home: const LoginPage(),
       ),
     );
   }

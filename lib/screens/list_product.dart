@@ -3,6 +3,7 @@ import 'package:e_commerce_mobile_app/models/product.dart';
 import 'package:e_commerce_mobile_app/widgets/drawer.dart';
 import 'package:pbp_django_auth/pbp_django_auth.dart';
 import 'package:provider/provider.dart';
+
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key});
 
@@ -11,21 +12,17 @@ class ProductPage extends StatefulWidget {
 }
 
 class _ProductPageState extends State<ProductPage> {
-  Future<List<Product>> fetchMood(CookieRequest request) async {
-    
-    final response = await request.get('http://10.0.2.2/json/');
-    
-    // Melakukan decode response menjadi bentuk json
-    var data = response;
-    
-    // Melakukan konversi data json menjadi object MoodEntry
-    List<Product> listMood = [];
-    for (var d in data) {
+  Future<List<Product>> fetchProducts(CookieRequest request) async {
+    final response = await request.get('http://127.0.0.1:8000/json/');
+
+    // Decode the response and convert it to a list of Product objects
+    List<Product> productList = [];
+    for (var d in response) {
       if (d != null) {
-        listMood.add(Product.fromJson(d));
+        productList.add(Product.fromJson(d));
       }
     }
-    return listMood;
+    return productList;
   }
 
   @override
@@ -33,11 +30,11 @@ class _ProductPageState extends State<ProductPage> {
     final request = context.watch<CookieRequest>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mood Entry List'),
+        title: const Text('Product List'),
       ),
       drawer: const LeftDrawer(),
       body: FutureBuilder(
-        future: fetchMood(request),
+        future: fetchProducts(request),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.data == null) {
             return const Center(child: CircularProgressIndicator());
@@ -46,7 +43,7 @@ class _ProductPageState extends State<ProductPage> {
               return const Column(
                 children: [
                   Text(
-                    'Belum ada data mood pada mental health tracker.',
+                    'No products available.',
                     style: TextStyle(fontSize: 20, color: Color(0xff59A5D8)),
                   ),
                   SizedBox(height: 8),
@@ -59,23 +56,40 @@ class _ProductPageState extends State<ProductPage> {
                   margin:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   padding: const EdgeInsets.all(20.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 4.0,
+                        offset: Offset(0, 4),
+                      ),
+                    ],
+                  ),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${snapshot.data![index].fields.mood}",
+                        snapshot.data![index].fields.name,
                         style: const TextStyle(
                           fontSize: 18.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.feelings}"),
+                      Text("Price: \$${snapshot.data![index].fields.price}"),
                       const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.moodIntensity}"),
+                      Text("Description: ${snapshot.data![index].fields.description}"),
                       const SizedBox(height: 10),
-                      Text("${snapshot.data![index].fields.time}")
+                      Text("Category: ${snapshot.data![index].fields.category}"),
+                      const SizedBox(height: 10),
+                      Image.network(
+                        snapshot.data![index].fields.image,
+                        height: 150,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ],
                   ),
                 ),
