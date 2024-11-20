@@ -37,3 +37,42 @@ Pada menu.dart dibuat widget pertama menggunakan scaffold untuk membuat tampilan
 
 
 </details>
+
+<details>
+  <summary>Tugas 9</summary>
+  1. Pentingnya Membuat Model untuk Pengambilan/Pengiriman Data JSON
+  Pertama karena model dibuat dan terdefinisi oleh kita maka data tersebut memiliki struktur dan validasi bila dikirim atau diterima dari backend. Hal tersebut mempermudah pengelolaan dan manipulasi data pada app. Lalu     dengan adanya model, data yang diterima bisa dipastikan memiliki bentuk dan tipe yang diharapkan karena sudah terdefinisi fields atau bentuknya itu seperti apa oleh kita. Jika model tidak dibuat, meskipun tidak selalu terjadi error, data yang dikirim atau diminta bisa saja inconsistent dan berpotensi error saat parsing atau pengolahan data yang tidak sesuai format.
+  
+2. Fungsi dari Library http
+   Tentunya library http memungkinkan flutter app untuk mengirimkan permintaan GET, POST, dan jenis lainnya ke server Django. Library ini memungkinkan app flutter saya untuk memproses data yang dikirim server, termasuk data JSON. Lalu dengan library ini dapat ditambahkan header khusus, seperti token autentikasi, dan juga pengiriman payload yang dikodekan dalam format JSON.
+
+3. Fungsi CookieRequest
+
+CookieRequest adalah komponen dari package pbp_django_auth yang digunakan untuk mengelola session dan autentikasi user. Cara bekerjanya tidak beda dengan cookie request yang dulu dipakai pada proyek django, CookieRequest menyimpan cookie dari respons server sehingga session autentikasi dapat dipertahankan antara tiap request. Nah hal itu memungkinkan app untuk mengetahui apakah user sedang dalam status login atau tidak yang mana itu ddapat dipakai untuk menglimit apa yang user dapat lihat di app. Dengan berbagi instance CookieRequest ke semua komponen Flutter, the whole app dapat mengakses status login user dan melakukan request dengan cookie yang sama.
+
+4. Mekanisme Pengiriman Data dari Input hingga Ditampilkan di Flutter
+
+Proses pengiriman data dalam aplikasi Flutter yang terhubung dengan Django adalah sebagai berikut:
+
+-Data dimasukkan ke dalam form di Flutter.
+-Data dikirim ke server Django menggunakan http atau CookieRequest, tergantung pada jenis permintaan (autentikasi atau data biasa).
+-Django menerima permintaan dan memproses data di views. Data disimpan atau diproses di models dalam konteks data ini adalah product pada flutter app.
+-Django mengirimkan respons JSON ke aplikasi Flutter.
+-Flutter menerima data JSON, memprosesnya, dan menampilkan data di UI.
+
+5. Mekanisme Autentikasi: Login, Register, dan Logout
+
+Mekanisme autentikasi melibatkan langkah-langkah berikut:
+
+-Input Data Account di Flutter:
+User mengisi form login atau register di aplikasi Flutter lalu data dikirim ke URL autentikasi Django misal 127.0.0.1:8000/auth/login/ atau 127.0.0.1:8000/auth/register/.
+
+-Proses Autentikasi di Django:
+Django menerima data input dan memprosesnya menggunakan views. Dalam konteks autentikasi, Django memvalidasi data terhadap database pengguna dan jika valid, Django mengembalikan respons yang mencakup cookie sesi atau token autentikasi.
+
+-Penyimpanan Cookie di Flutter:
+Instance CookieRequest di Flutter menyimpan cookie atau token tersebut. Cookie ini digunakan untuk permintaan selanjutnya agar user tetap dalam status login.
+
+-Tampilan Menu di Flutter:
+Setelah login berhasil, UI Flutter diperbarui untuk menampilkan menu yang sesuai dengan status pengguna. Untuk logout, Flutter mengirim permintaan ke URL Django 127.0.0.1:8000/auth/logout/, dan cookie dihapus.
+</details>
